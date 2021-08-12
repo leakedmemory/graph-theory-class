@@ -1,2 +1,2 @@
-venv
-.idea
+Pipfile
+Pipfile.lock

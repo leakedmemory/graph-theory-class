@@ -1,5 +1,5 @@
 import unittest
-from meu_grafo import MeuGrafo
+from meu_grafo_matriz_adjacencia_nao_dir import MeuGrafo
 from bibgrafo.grafo_exceptions import *
 
 
@@ -372,7 +372,7 @@ class TestGrafo(unittest.TestCase):
         self.g_grande_bfs23.adicionaAresta('a31', '17', '16')
         self.g_grande_bfs23.adicionaAresta('a33', '18', '19')
         self.g_grande_bfs23.adicionaAresta('a34', '20', '10')
-        
+
         # Grafos com ciclo
         self.com = MeuGrafo(['1', '2', '3', '4'])
         self.com.adicionaAresta('a1', '1', '2')
@@ -386,7 +386,7 @@ class TestGrafo(unittest.TestCase):
 
         self.com3 = MeuGrafo(['1'])
         self.com3.adicionaAresta('a1', '1', '1')
-        
+
         # Grafos sem ciclo
         self.sem = MeuGrafo(['1', '2', '3', '4', '5'])
         self.sem.adicionaAresta('a1', '1', '2')
@@ -411,8 +411,8 @@ class TestGrafo(unittest.TestCase):
 
     def test_vertices_nao_adjacentes(self):
         self.assertEqual(self.g_p.vertices_nao_adjacentes(),
-                         ['J-E', 'J-M', 'J-P', 'J-T', 'J-Z', 'C-Z', 'E-M',
-                          'E-P', 'E-T', 'E-Z', 'P-M', 'P-T', 'P-Z', 'M-Z'])
+                         ['J-E', 'J-P', 'J-M', 'J-T', 'J-Z', 'C-Z', 'E-P',
+                          'E-M', 'E-T', 'E-Z', 'P-M', 'P-T', 'P-Z', 'M-Z'])
         self.assertEqual(self.g_c.vertices_nao_adjacentes(), [])
         self.assertEqual(self.g_c3.vertices_nao_adjacentes(), [])
 
@@ -486,108 +486,6 @@ class TestGrafo(unittest.TestCase):
         self.assertFalse((self.g_l3.eh_completo()))
         self.assertFalse((self.g_l4.eh_completo()))
         self.assertFalse((self.g_l5.eh_completo()))
-
-    def test_dfs(self):
-        # Grafo pequeno
-        self.assertEqual(self.g_pequeno.dfs('1'), self.g_pequeno)
-        self.assertEqual(self.g_pequeno.dfs('2'), self.g_pequeno)
-        self.assertEqual(self.g_pequeno.dfs('3'), self.g_pequeno)
-        self.assertEqual(self.g_pequeno.dfs('4'), self.g_pequeno)
-        self.assertEqual(self.g_pequeno.dfs('5'), self.g_pequeno)
-
-        # Grafo médio
-        self.assertEqual(self.g_medio.dfs('1'), self.g_medio_dfs1)
-        self.assertEqual(self.g_medio.dfs('5'), self.g_medio_dfs5)
-        self.assertEqual(self.g_medio.dfs('7'), self.g_medio_dfs7)
-        self.assertEqual(self.g_medio.dfs('9'), self.g_medio_dfs9)
-
-        # Grafo grande
-        self.assertEqual(self.g_grande.dfs('1'), self.g_grande_dfs1)
-        self.assertEqual(self.g_grande.dfs('23'), self.g_grande_dfs23)
-
-    def test_bfs(self):
-        # Grafo pequeno
-        self.assertEqual(self.g_pequeno.bfs('1'), self.g_pequeno)
-        self.assertEqual(self.g_pequeno.bfs('2'), self.g_pequeno)
-        self.assertEqual(self.g_pequeno.bfs('3'), self.g_pequeno)
-        self.assertEqual(self.g_pequeno.bfs('4'), self.g_pequeno)
-        self.assertEqual(self.g_pequeno.bfs('5'), self.g_pequeno)
-
-        # Grafo médio
-        self.assertEqual(self.g_medio.bfs('1'), self.g_medio_bfs1)
-        self.assertEqual(self.g_medio.bfs('5'), self.g_medio_bfs5)
-        self.assertEqual(self.g_medio.bfs('7'), self.g_medio_bfs7)
-        self.assertEqual(self.g_medio.bfs('9'), self.g_medio_bfs9)
-
-        # Grafo grande
-        self.assertEqual(self.g_grande.bfs('1'), self.g_grande_bfs1)
-        self.assertEqual(self.g_grande.bfs('23'), self.g_grande_bfs23)
-
-    def test_ciclo(self):
-        self.assertEqual(self.com.ha_clico(), ['1', 'a2', '3', 'a4', '4', 'a3',
-                                               '2', 'a1', '1'])
-        self.assertEqual(self.g_medio.ha_clico(), ['1', 'a2', '3', 'a3', '4',
-                                                   'a4', '5', 'a5', '6',
-                                                   'a6', '2', 'a1', '1'])
-        self.assertEqual(self.g_grande.ha_clico(), ['1', 'a3', '4', 'a4', '3',
-                                                    'a2', '2', 'a1', '1'])
-        self.assertEqual(self.g_p.ha_clico(), ['C', 'a7', 'M', 'a8', 'T', 'a6',
-                                               'C'])
-        self.assertEqual(self.com2.ha_clico(), ['1', 'a1', '2', 'a2', '1'])
-        self.assertEqual(self.com3.ha_clico(), ['1', 'a1', '1'])
-        self.assertFalse(self.sem.ha_clico())
-        self.assertFalse(self.outro.ha_clico())
-        self.assertFalse(self.g_pequeno.ha_clico())
-        self.assertFalse(self.g_grande.caminho(28))
-        self.assertFalse(self.g_p.caminho(5))
-
-    def test_caminho(self):
-        self.assertEqual(self.g_p.caminho(4), ['J', 'a1', 'C', 'a7', 'M', 'a8',
-                                               'T', 'a9', 'Z'])
-        self.assertEqual(self.g_grande.caminho(27), ['7', 'a25', '5', 'a5',
-                                                     '3', 'a2', '2', 'a1', '1',
-                                                     'a3', '4', 'a14', '6',
-                                                     'a15', '30', 'a16', '29',
-                                                     'a17', '28', 'a19', '27',
-                                                     'a20', '26', 'a21', '25',
-                                                     'a22', '23', 'a26', '22',
-                                                     'a27', '21', 'a28', '20',
-                                                     'a29', '19', 'a33', '18',
-                                                     'a32', '17', 'a31', '16',
-                                                     'a12', '14', 'a11', '13',
-                                                     'a10', '12', 'a7', '8',
-                                                     'a8', '9', 'a35', '10',
-                                                     'a36', '11'])
-        self.assertEqual(self.g_grande.caminho(8), ['1', 'a1', '2', 'a2', '3',
-                                                    'a4', '4', 'a14', '6',
-                                                    'a15', '30', 'a16', '29',
-                                                    'a17', '28', 'a19', '27'])
-        self.assertEqual(self.com.caminho(3), ['1', 'a1', '2', 'a3', '4',
-                                               'a4', '3'])
-        self.assertEqual(self.g_pequeno.caminho(3), ['3', 'a2', '1', 'a1', '2',
-                                                     'a3', '4'])
-        self.assertEqual(self.g_medio.caminho(9), ['1', 'a2', '3', 'a3', '4',
-                                                   'a4', '5', 'a5', '6', 'a6',
-                                                   '2', 'a7', '7', 'a9', '8',
-                                                   'a10', '9', 'a12', '10'])
-        self.assertFalse(self.g_pequeno.caminho(4))
-        self.assertFalse(self.g_medio.caminho(10))
-        self.assertFalse(self.g_grande.caminho(28))
-        self.assertFalse(self.outro.caminho(5))
-
-    def test_conexo(self):
-        self.assertTrue(self.g_p.conexo())
-        self.assertTrue(self.g_c.conexo())
-        self.assertTrue(self.g_c2.conexo())
-        self.assertTrue(self.g_c3.conexo())
-        self.assertTrue(self.g_pequeno.conexo())
-        self.assertTrue(self.g_medio.conexo())
-        self.assertTrue(self.g_grande.conexo())
-        self.assertTrue(self.g_pequeno.conexo())
-        self.assertTrue(self.g_medio.conexo())
-        self.assertTrue(self.g_grande.conexo())
-        self.assertFalse(self.g_d.conexo())
-        self.assertFalse(self.outro.conexo())
 
 
 if __name__ == '__main__':
