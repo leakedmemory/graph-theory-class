@@ -105,3 +105,34 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
                     return False
 
         return True
+
+    def conexo(self):
+        if len(self.M) == 1:
+            return True
+
+        numero_de_vertices = len(self.N)
+        matrix = [[0 for _ in range(numero_de_vertices)] for _ in range(numero_de_vertices)]
+
+        for i in range(numero_de_vertices):
+            matrix[i][i] = 1
+
+        for i in range(numero_de_vertices):
+            for j in range(i, numero_de_vertices):
+                if len(self.M[i][j]) > 0:
+                    matrix[i][j] = 1
+
+        for line in matrix:
+            print(line)
+
+    def caminho_euleriano(self):
+        vertices_impares = 0
+
+        for vertice in self.N:
+            if self.grau(vertice) % 2 != 0:
+                vertices_impares += 1
+
+            if vertices_impares > 2:
+                return False
+
+        if vertices_impares == 1:
+            return False
