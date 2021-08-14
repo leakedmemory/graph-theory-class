@@ -10,3 +10,7 @@ g_p.adicionaAresta('a6', 'b', 'g')
 g_p.adicionaAresta('a7', 'b', 'e')
 g_p.adicionaAresta('a8', 'e', 'f')
 g_p.adicionaAresta('a9', 'f', 'g')
+
+print(g_p)
+g_p.remove_aresta('a1')
+print(g_p)

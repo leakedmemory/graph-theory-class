@@ -142,6 +142,16 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
 
         return False if 0 in resultado[0] else True
 
+    def remove_aresta(self, rotulo):
+        if rotulo not in self.listar_arestas():
+            raise ArestaInvalidaException(f'A aresta {rotulo} não existe.')
+
+        for i in range(len(self.M)):
+            for j in range(i, len(self.M)):
+                if rotulo in self.M[i][j]:
+                    del self.M[i][j][rotulo]
+                    return
+
     def listar_arestas(self):
         chaves = []
         valores = []
@@ -202,5 +212,6 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
         if vertices_impares == 1 or not self.conexo():
             return False
 
+        copia = self
         caminho = []
-        print(self._caminho_util('f', self.M, caminho))
+        print(self._caminho_util('f', copia, caminho))
