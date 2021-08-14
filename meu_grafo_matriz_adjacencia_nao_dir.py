@@ -142,15 +142,65 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
 
         return False if 0 in resultado[0] else True
 
+    def listar_arestas(self):
+        chaves = []
+        valores = []
+
+        for i in range(len(self.M)):
+            for j in range(i, len(self.M)):
+                if self.M[i][j]:
+                    chaves += list(self.M[i][j].keys())
+                    valores += list(self.M[i][j].values())
+
+        arestas = {}
+        for indice, chave in enumerate(chaves):
+            arestas[chave] = valores[indice]
+
+        return arestas
+
+    def _caminho_util(self, raiz, matriz, caminho):
+        indice = self.N.index(raiz)
+        vizinhos = []
+
+        for i in range(indice):
+            if len(self.M[i][indice]) >= 1:
+                vizinhos.append(self.N[i])
+
+        for j in range(indice, len(self.M)):
+            if len(self.M[indice][j]) >= 1:
+                vizinhos.append(self.N[j])
+
+        if not vizinhos:
+            print('terminou')
+            return
+        elif len(vizinhos) == 1:
+            caminho += [raiz]
+            arestas = matriz.listar_arestas()
+
+            for rotulo in arestas:
+                v1 = arestas[rotulo].getV1()
+                v2 = arestas[rotulo].getV2()
+
+                if (v1 or v2) == raiz and (v1 or v2) == vizinhos[0]:
+                    caminho += [rotulo, vizinhos[0]]
+                    self._caminho_util(vizinhos[0], matriz, caminho)
+
+        return vizinhos
+
     def caminho_euleriano(self):
         vertices_impares = 0
+        vertices_iniciais = []
 
         for vertice in self.N:
             if self.grau(vertice) % 2 != 0:
                 vertices_impares += 1
+                vertices_iniciais.append(vertice)
 
             if vertices_impares > 2:
                 return False
 
-        if vertices_impares == 1:
+        if vertices_impares == 1 or not self.conexo():
             return False
+
+        caminho = []
+        print(self._caminho_util('f', self.M, caminho))

@@ -477,15 +477,15 @@ class TestGrafo(unittest.TestCase):
 
     def test_eh_completo(self):
         self.assertFalse(self.g_p.eh_completo())
-        self.assertFalse((self.g_p_sem_paralelas.eh_completo()))
-        self.assertTrue((self.g_c.eh_completo()))
-        self.assertTrue((self.g_c2.eh_completo()))
-        self.assertTrue((self.g_c3.eh_completo()))
-        self.assertFalse((self.g_l1.eh_completo()))
-        self.assertFalse((self.g_l2.eh_completo()))
-        self.assertFalse((self.g_l3.eh_completo()))
-        self.assertFalse((self.g_l4.eh_completo()))
-        self.assertFalse((self.g_l5.eh_completo()))
+        self.assertFalse(self.g_p_sem_paralelas.eh_completo())
+        self.assertTrue(self.g_c.eh_completo())
+        self.assertTrue(self.g_c2.eh_completo())
+        self.assertTrue(self.g_c3.eh_completo())
+        self.assertFalse(self.g_l1.eh_completo())
+        self.assertFalse(self.g_l2.eh_completo())
+        self.assertFalse(self.g_l3.eh_completo())
+        self.assertFalse(self.g_l4.eh_completo())
+        self.assertFalse(self.g_l5.eh_completo())
 
     def test_conexo(self):
         self.assertTrue(self.g_p.conexo())
