@@ -1,4 +1,5 @@
-from bibgrafo.grafo_matriz_adj_nao_dir import GrafoMatrizAdjacenciaNaoDirecionado
+from bibgrafo.grafo_matriz_adj_nao_dir import \
+    GrafoMatrizAdjacenciaNaoDirecionado
 from bibgrafo.grafo_exceptions import *
 
 
@@ -46,7 +47,7 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
 
         for i in range(indice, len(self.M)):
             if indice == i:
-                grau += len(self.M[indice][i])*2
+                grau += len(self.M[indice][i]) * 2
             else:
                 grau += len(self.M[indice][i])
 
@@ -99,30 +100,51 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
         if self.ha_laco() or self.ha_paralelas():
             return False
 
-        for i in range(len(self.M)-1):
-            for j in range(i+1, len(self.M)):
+        for i in range(len(self.M) - 1):
+            for j in range(i + 1, len(self.M)):
                 if len(self.M[i][j]) != 1:
                     return False
 
         return True
+
+    def _elevar_matriz(self, matriz, numero_de_vertices, resultado, contador=2):
+        util = [[0 for _ in range(numero_de_vertices)] for _ in
+                range(numero_de_vertices)]
+
+        for i in range(numero_de_vertices):
+            for j in range(i, numero_de_vertices):
+                for k in range(numero_de_vertices):
+                    if contador == 2:
+                        util[i][j] += matriz[i][k] * matriz[k][j]
+                    else:
+                        util[i][j] += resultado[i][k] * matriz[k][j]
+
+        if contador < numero_de_vertices:
+            contador += 1
+            self._elevar_matriz(matriz, numero_de_vertices, util, contador)
+
+        return util
 
     def conexo(self):
         if len(self.M) == 1:
             return True
 
         numero_de_vertices = len(self.N)
-        matrix = [[0 for _ in range(numero_de_vertices)] for _ in range(numero_de_vertices)]
-
-        for i in range(numero_de_vertices):
-            matrix[i][i] = 1
+        matriz = [[0 if i != j else 1 for i in range(numero_de_vertices)]
+                  for j in range(numero_de_vertices)]
 
         for i in range(numero_de_vertices):
             for j in range(i, numero_de_vertices):
                 if len(self.M[i][j]) > 0:
-                    matrix[i][j] = 1
+                    matriz[i][j] = 1
 
-        for line in matrix:
-            print(line)
+        resultado = [[0 for _ in range(numero_de_vertices)] for _ in
+                     range(numero_de_vertices)]
+
+        resultado = self._elevar_matriz(matriz, numero_de_vertices, resultado)
+
+        for row in resultado:
+            print(row)
 
     def caminho_euleriano(self):
         vertices_impares = 0
