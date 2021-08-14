@@ -107,7 +107,7 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
 
         return True
 
-    def _elevar_matriz(self, matriz, numero_de_vertices, resultado, contador=2):
+    def _elevar_matriz(self, matriz, numero_de_vertices, resultado=None, contador=2):
         util = [[0 for _ in range(numero_de_vertices)] for _ in
                 range(numero_de_vertices)]
 
@@ -121,7 +121,7 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
 
         if contador < numero_de_vertices:
             contador += 1
-            self._elevar_matriz(matriz, numero_de_vertices, util, contador)
+            util = self._elevar_matriz(matriz, numero_de_vertices, util, contador)
 
         return util
 
@@ -138,13 +138,9 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
                 if len(self.M[i][j]) > 0:
                     matriz[i][j] = 1
 
-        resultado = [[0 for _ in range(numero_de_vertices)] for _ in
-                     range(numero_de_vertices)]
+        resultado = self._elevar_matriz(matriz, numero_de_vertices)
 
-        resultado = self._elevar_matriz(matriz, numero_de_vertices, resultado)
-
-        for row in resultado:
-            print(row)
+        return False if 0 in resultado[0] else True
 
     def caminho_euleriano(self):
         vertices_impares = 0

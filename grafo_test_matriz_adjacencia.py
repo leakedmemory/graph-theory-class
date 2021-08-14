@@ -487,6 +487,20 @@ class TestGrafo(unittest.TestCase):
         self.assertFalse((self.g_l4.eh_completo()))
         self.assertFalse((self.g_l5.eh_completo()))
 
+    def test_conexo(self):
+        self.assertTrue(self.g_p.conexo())
+        self.assertTrue(self.g_c.conexo())
+        self.assertTrue(self.g_c2.conexo())
+        self.assertTrue(self.g_c3.conexo())
+        self.assertTrue(self.g_pequeno.conexo())
+        self.assertTrue(self.g_medio.conexo())
+        self.assertTrue(self.g_grande.conexo())
+        self.assertTrue(self.g_pequeno.conexo())
+        self.assertTrue(self.g_medio.conexo())
+        self.assertTrue(self.g_grande.conexo())
+        self.assertFalse(self.g_d.conexo())
+        self.assertFalse(self.outro.conexo())
+
 
 if __name__ == '__main__':
     unittest.main()
