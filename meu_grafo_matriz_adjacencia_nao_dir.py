@@ -1,6 +1,7 @@
 from bibgrafo.grafo_matriz_adj_nao_dir import \
     GrafoMatrizAdjacenciaNaoDirecionado
 from bibgrafo.grafo_exceptions import *
+from copy import deepcopy
 
 
 class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
@@ -108,6 +109,19 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
         return True
 
     def _elevar_matriz(self, matriz, numero_de_vertices, resultado=None, contador=2):
+        """
+        Função recursiva auxiliar utilizada para saber se o grafo é
+        conexo. A recursividade é parada quando o número de vértices é
+        igual ao expoente da matriz.
+        :param matriz: Matriz contendo 1 na diagonal principal e nos
+        locais em que há aresta entre i e j.
+        :param numero_de_vertices: Número de vértices presentes no grafo.
+        :param resultado: Parâmetro para salvar o resultado obtido na
+        multiplicação feita anteriormente.
+        :param contador: Parâmetro para salvar a que grau a matriz já
+        foi elevada.
+        :return: Retorna matriz^numero_de_vertices.
+        """
         util = [[0 for _ in range(numero_de_vertices)] for _ in
                 range(numero_de_vertices)]
 
@@ -126,6 +140,10 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
         return util
 
     def conexo(self):
+        """
+        Testa se o grafo é conexo.
+        :return: Valor booleano, sendo True para grafo conexo.
+        """
         if len(self.M) == 1:
             return True
 
@@ -134,15 +152,26 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
                   for j in range(numero_de_vertices)]
 
         for i in range(numero_de_vertices):
-            for j in range(i, numero_de_vertices):
-                if len(self.M[i][j]) > 0:
-                    matriz[i][j] = 1
+            for j in range(numero_de_vertices):
+                if len(self.M[i][j]) > 0 and self.M[i][j] != '-':
+                    matriz[i][j] = matriz[j][i] = 1
 
         resultado = self._elevar_matriz(matriz, numero_de_vertices)
 
-        return False if 0 in resultado[0] else True
+        for i in range(len(resultado)-1):
+            if 0 not in resultado[i]:
+                return True
 
-    def remove_aresta(self, rotulo):
+        return False
+
+    def remove_aresta(self, rotulo, vertice):
+        """
+        Remove uma aresta do grafo. Caso o grau do vértice raiz se torne
+        0 após a remoção, esse vértice será excluído do grafo.
+        :param rotulo: Rótulo da aresta a ser removida.
+        :param vertice: Vértice que, caso se torne de grau 0, será removido.
+        :return: None
+        """
         if rotulo not in self.listar_arestas():
             raise ArestaInvalidaException(f'A aresta {rotulo} não existe.')
 
@@ -150,9 +179,22 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
             for j in range(i, len(self.M)):
                 if rotulo in self.M[i][j]:
                     del self.M[i][j][rotulo]
-                    return
+                    break
+
+        if self.grau(vertice) == 0:
+            indice = self.N.index(vertice)
+            del self.M[indice]
+
+            for row in range(len(self.M)):
+                del self.M[row][indice]
+
+            del self.N[indice]
 
     def listar_arestas(self):
+        """
+        Lista as arestas presentes no grafo.
+        :return: Dicionário no formato {rótulo: objeto aresta}.
+        """
         chaves = []
         valores = []
 
@@ -168,36 +210,65 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
 
         return arestas
 
-    def _caminho_util(self, raiz, matriz, caminho):
-        indice = self.N.index(raiz)
+    def _caminho_util(self, raiz, matriz, caminho=None):
+        """
+        Função recursiva utilizada para formar o caminho euleriano.
+        :param raiz: Vértice raiz inicial.
+        :param matriz: Cópia do grafo matriz adjacência.
+        :param caminho: Caminho euleriano a ser formado.
+        :return: Parâmetro caminho com o caminho completo.
+        """
+        if caminho is None:
+            caminho = []
+        indice = matriz.N.index(raiz)
         vizinhos = []
 
         for i in range(indice):
-            if len(self.M[i][indice]) >= 1:
-                vizinhos.append(self.N[i])
+            if len(matriz.M[i][indice]) >= 1:
+                vizinhos.append(matriz.N[i])
 
-        for j in range(indice, len(self.M)):
-            if len(self.M[indice][j]) >= 1:
-                vizinhos.append(self.N[j])
+        for j in range(indice, len(matriz.M)):
+            if len(matriz.M[indice][j]) >= 1:
+                vizinhos.append(matriz.N[j])
 
         if not vizinhos:
-            print('terminou')
-            return
-        elif len(vizinhos) == 1:
             caminho += [raiz]
+            return caminho
+        else:
             arestas = matriz.listar_arestas()
 
             for rotulo in arestas:
                 v1 = arestas[rotulo].getV1()
                 v2 = arestas[rotulo].getV2()
 
-                if (v1 or v2) == raiz and (v1 or v2) == vizinhos[0]:
-                    caminho += [rotulo, vizinhos[0]]
-                    self._caminho_util(vizinhos[0], matriz, caminho)
+                for vizinho in vizinhos:
+                    if v1 == raiz and v2 == vizinho or v1 == vizinho and v2 == raiz:
+                        if len(vizinhos) == 1:
+                            caminho += [raiz, rotulo]
+                            matriz.remove_aresta(rotulo, raiz)
+                            self._caminho_util(vizinhos[0], matriz, caminho)
 
-        return vizinhos
+                            if len(matriz.N) == 1:
+                                return caminho
+                        else:
+                            teste = deepcopy(matriz)
+                            teste.remove_aresta(rotulo, raiz)
+
+                            if teste.conexo():
+                                caminho += [raiz, rotulo]
+                                matriz.remove_aresta(rotulo, raiz)
+                                self._caminho_util(vizinho, matriz, caminho)
+
+                                if len(matriz.N) == 1:
+                                    return caminho
 
     def caminho_euleriano(self):
+        """
+        Tenta montar um caminho euleriano com base no grafo.
+        :return: Retorna uma lista do caminho percorrido no seguinte
+        formato: [vértice, aresta, vértice, aresta, ..., vértice]. Caso
+        não haja um caminho euleriano, retorna o booleano False.
+        """
         vertices_impares = 0
         vertices_iniciais = []
 
@@ -212,6 +283,17 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
         if vertices_impares == 1 or not self.conexo():
             return False
 
-        copia = self
-        caminho = []
-        print(self._caminho_util('f', copia, caminho))
+        if vertices_iniciais:
+            for vertice in vertices_iniciais:
+                copia = deepcopy(self)
+                caminho = self._caminho_util(vertice, copia)
+
+                if not copia.listar_arestas():
+                    return caminho
+        else:
+            for vertice in self.N:
+                copia = deepcopy(self)
+                caminho = self._caminho_util(vertice, copia)
+
+                if not copia.listar_arestas():
+                    return caminho
