@@ -501,6 +501,26 @@ class TestGrafo(unittest.TestCase):
         self.assertFalse(self.g_d.conexo())
         self.assertFalse(self.outro.conexo())
 
+    def test_caminho_euleriano(self):
+        self.assertEqual(self.g_medio_dfs5.caminho_euleriano(),
+                         ['5', 'a4', '4', 'a3', '3', 'a2', '1', 'a1',
+                          '2', 'a6', '6', 'a8', '7', 'a9', '8', 'a10', '9',
+                          'a12', '10'])
+        self.assertEqual(self.g_medio_dfs7.caminho_euleriano(),
+                         ['6', 'a5', '5', 'a4', '4', 'a3', '3', 'a2',
+                          '1', 'a1', '2', 'a7', '7', 'a9', '8', 'a10', '9',
+                          'a12', '10'])
+        self.assertEqual(self.com.caminho_euleriano(), ['1', 'a1', '2',
+                                                        'a3', '4', 'a4', '3',
+                                                        'a2', '1'])
+        self.assertEqual(self.com2.caminho_euleriano(), ['1', 'a1', '2', 'a2', '1'])
+        self.assertEqual(self.com3.caminho_euleriano(), ['1', 'a1', '1'])
+        self.assertEqual(self.g_c2.caminho_euleriano(), ['Nina', 'amiga', 'Maria'])
+        self.assertFalse(self.g_p.caminho_euleriano())
+        self.assertFalse(self.g_p_sem_paralelas.caminho_euleriano())
+        self.assertFalse(self.g_c.caminho_euleriano())
+        self.assertFalse(self.g_c3.caminho_euleriano())
+
 
 if __name__ == '__main__':
     unittest.main()

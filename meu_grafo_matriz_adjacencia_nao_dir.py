@@ -269,6 +269,13 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
         formato: [vértice, aresta, vértice, aresta, ..., vértice]. Caso
         não haja um caminho euleriano, retorna o booleano False.
         """
+        if len(self.N) == 1 and not self.listar_arestas():
+            return False
+        elif len(self.N) == 1 and len(self.listar_arestas().keys()) == 1:
+            return [self.N[0], list(self.listar_arestas().keys())[0], self.N[0]]
+        elif len(self.N) == 1 and len(self.listar_arestas().keys()) > 1:
+            return False
+
         vertices_impares = 0
         vertices_iniciais = []
 
