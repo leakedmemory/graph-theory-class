@@ -394,6 +394,47 @@ class TestGrafo(unittest.TestCase):
         self.sem.adicionaAresta('a3', '3', '4')
         self.sem.adicionaAresta('a4', '3', '5')
 
+        # Grafos para teste de caminho euleriano
+        self.slays = MeuGrafo(['a', 'b', 'c', 'd', 'e', 'f', 'g'])
+        self.slays.adicionaAresta('a1', 'a', 'b')
+        self.slays.adicionaAresta('a2', 'a', 'c')
+        self.slays.adicionaAresta('a3', 'a', 'd')
+        self.slays.adicionaAresta('a4', 'a', 'f')
+        self.slays.adicionaAresta('a5', 'b', 'c')
+        self.slays.adicionaAresta('a6', 'b', 'g')
+        self.slays.adicionaAresta('a7', 'b', 'e')
+        self.slays.adicionaAresta('a8', 'e', 'f')
+        self.slays.adicionaAresta('a9', 'f', 'g')
+
+        self.teste_conexo = MeuGrafo(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'])
+        self.teste_conexo.adicionaAresta('a1', 'a', 'b')
+        self.teste_conexo.adicionaAresta('a2', 'a', 'd')
+        self.teste_conexo.adicionaAresta('a3', 'b', 'c')
+        self.teste_conexo.adicionaAresta('a4', 'c', 'd')
+        self.teste_conexo.adicionaAresta('a5', 'd', 'e')
+        self.teste_conexo.adicionaAresta('a6', 'e', 'f')
+        self.teste_conexo.adicionaAresta('a7', 'e', 'h')
+        self.teste_conexo.adicionaAresta('a8', 'f', 'g')
+        self.teste_conexo.adicionaAresta('a9', 'g', 'h')
+
+        self.teste_desconexo = MeuGrafo(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'])
+        self.teste_desconexo.adicionaAresta('a1', 'a', 'b')
+        self.teste_desconexo.adicionaAresta('a2', 'a', 'd')
+        self.teste_desconexo.adicionaAresta('a3', 'b', 'c')
+        self.teste_desconexo.adicionaAresta('a4', 'c', 'd')
+        self.teste_desconexo.adicionaAresta('a6', 'e', 'f')
+        self.teste_desconexo.adicionaAresta('a7', 'e', 'h')
+        self.teste_desconexo.adicionaAresta('a8', 'f', 'g')
+        self.teste_desconexo.adicionaAresta('a9', 'g', 'h')
+
+        self.pares = MeuGrafo(['a', 'b', 'c', 'd', 'e', 'f'])
+        self.pares.adicionaAresta('a1', 'a', 'b')
+        self.pares.adicionaAresta('a2', 'a', 'f')
+        self.pares.adicionaAresta('a3', 'b', 'c')
+        self.pares.adicionaAresta('a4', 'c', 'd')
+        self.pares.adicionaAresta('a5', 'd', 'e')
+        self.pares.adicionaAresta('a6', 'e', 'f')
+
     def test_adiciona_aresta(self):
         self.assertTrue(self.g_p.adicionaAresta('a10', 'J', 'C'))
         with self.assertRaises(ArestaInvalidaException):
@@ -516,10 +557,21 @@ class TestGrafo(unittest.TestCase):
         self.assertEqual(self.com2.caminho_euleriano(), ['1', 'a1', '2', 'a2', '1'])
         self.assertEqual(self.com3.caminho_euleriano(), ['1', 'a1', '1'])
         self.assertEqual(self.g_c2.caminho_euleriano(), ['Nina', 'amiga', 'Maria'])
+        self.assertEqual(self.slays.caminho_euleriano(),
+                         ['d', 'a3', 'a', 'a1', 'b', 'a5', 'c', 'a2', 'a',
+                          'a4', 'f', 'a8', 'e', 'a7', 'b', 'a6', 'g', 'a9', 'f'])
+        self.assertEqual(self.teste_conexo.caminho_euleriano(),
+                         ['d', 'a2', 'a', 'a1', 'b', 'a3', 'c',
+                          'a4', 'd', 'a5', 'e', 'a6', 'f', 'a8', 'g', 'a9',
+                          'h', 'a7', 'e'])
+        self.assertEqual(self.pares.caminho_euleriano(),
+                         ['a', 'a1', 'b', 'a3', 'c', 'a4', 'd', 'a5',
+                          'e', 'a6', 'f', 'a2', 'a'])
         self.assertFalse(self.g_p.caminho_euleriano())
         self.assertFalse(self.g_p_sem_paralelas.caminho_euleriano())
         self.assertFalse(self.g_c.caminho_euleriano())
         self.assertFalse(self.g_c3.caminho_euleriano())
+        self.assertFalse(self.teste_desconexo.caminho_euleriano())
 
 
 if __name__ == '__main__':
