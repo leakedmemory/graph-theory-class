@@ -1,7 +1,8 @@
+import copy
+
 from bibgrafo.grafo_matriz_adj_nao_dir import \
     GrafoMatrizAdjacenciaNaoDirecionado
 from bibgrafo.grafo_exceptions import *
-from copy import deepcopy
 
 
 class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
@@ -251,7 +252,7 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
                             if len(matriz.N) == 1:
                                 return caminho
                         else:
-                            teste = deepcopy(matriz)
+                            teste = copy.deepcopy(matriz)
                             teste.remove_aresta(rotulo, raiz)
 
                             if teste.conexo():
@@ -292,14 +293,14 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
 
         if vertices_iniciais:
             for vertice in vertices_iniciais:
-                copia = deepcopy(self)
+                copia = copy.deepcopy(self)
                 caminho = self._caminho_util(vertice, copia)
 
                 if not copia.listar_arestas():
                     return caminho
         else:
             for vertice in self.N:
-                copia = deepcopy(self)
+                copia = copy.deepcopy(self)
                 caminho = self._caminho_util(vertice, copia)
 
                 if not copia.listar_arestas():

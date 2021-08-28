@@ -1,6 +1,8 @@
 import unittest
-from meu_grafo_matriz_adjacencia_nao_dir import MeuGrafo
+
 from bibgrafo.grafo_exceptions import *
+
+from meu_grafo_matriz_adjacencia_nao_dir import MeuGrafo
 
 
 class TestGrafo(unittest.TestCase):

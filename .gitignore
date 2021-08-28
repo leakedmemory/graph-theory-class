@@ -1,6 +1,8 @@
 /.idea
+__pycache__/
 /inspetionProfiles
 *.xml
 *.iml
 lixo.py
 /roteiros
+Pipfile

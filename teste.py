@@ -1,17 +1,13 @@
-from meu_grafo_matriz_adjacencia_nao_dir import MeuGrafo
 # from meu_grafo import MeuGrafo
+# from meu_grafo_matriz_adjacencia_nao_dir import MeuGrafo
+from meu_grafo_matriz_adjacencia_dir import MeuGrafo
 
-g_p = MeuGrafo(['a', 'b', 'c', 'd', 'e', 'f', 'g'])
+g_p = MeuGrafo(['a', 'b', 'c', 'd'])
 g_p.adicionaAresta('a1', 'a', 'b')
 g_p.adicionaAresta('a2', 'a', 'c')
-g_p.adicionaAresta('a3', 'a', 'd')
-g_p.adicionaAresta('a4', 'a', 'f')
-g_p.adicionaAresta('a5', 'b', 'c')
-g_p.adicionaAresta('a6', 'b', 'g')
-g_p.adicionaAresta('a7', 'b', 'e')
-g_p.adicionaAresta('a8', 'e', 'f')
-g_p.adicionaAresta('a9', 'f', 'g')
-print(g_p.caminho_euleriano())
+g_p.adicionaAresta('a3', 'b', 'c')
+g_p.adicionaAresta('a4', 'c', 'a')
+g_p.adicionaAresta('a5', 'c', 'd')
 
 teste = MeuGrafo(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'])
 teste.adicionaAresta('a1', 'a', 'b')
@@ -23,13 +19,13 @@ teste.adicionaAresta('a6', 'e', 'f')
 teste.adicionaAresta('a7', 'e', 'h')
 teste.adicionaAresta('a8', 'f', 'g')
 teste.adicionaAresta('a9', 'g', 'h')
-print(teste.caminho_euleriano())
 
 pares = MeuGrafo(['a', 'b', 'c', 'd', 'e', 'f'])
 pares.adicionaAresta('a1', 'a', 'b')
-pares.adicionaAresta('a2', 'a', 'f')
+pares.adicionaAresta('a2', 'f', 'a')
 pares.adicionaAresta('a3', 'b', 'c')
 pares.adicionaAresta('a4', 'c', 'd')
 pares.adicionaAresta('a5', 'd', 'e')
 pares.adicionaAresta('a6', 'e', 'f')
-print(pares.caminho_euleriano())
+
+print(pares.existe_caminho('a', 'a'))
