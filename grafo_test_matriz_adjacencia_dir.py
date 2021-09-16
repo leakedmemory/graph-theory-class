@@ -1,6 +1,6 @@
 import unittest
 
-from bibgrafo.grafo_exceptions import *
+import bibgrafo.grafo_exceptions
 
 from meu_grafo_matriz_adjacencia_dir import MeuGrafo
 
@@ -419,7 +419,8 @@ class TestGrafo(unittest.TestCase):
         self.teste_conexo.adicionaAresta('a8', 'f', 'g')
         self.teste_conexo.adicionaAresta('a9', 'g', 'h')
 
-        self.teste_desconexo = MeuGrafo(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'])
+        self.teste_desconexo = MeuGrafo([
+            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'])
         self.teste_desconexo.adicionaAresta('a1', 'a', 'b')
         self.teste_desconexo.adicionaAresta('a2', 'a', 'd')
         self.teste_desconexo.adicionaAresta('a3', 'b', 'c')
@@ -438,9 +439,11 @@ class TestGrafo(unittest.TestCase):
         self.pares.adicionaAresta('a6', 'f', 'a')
 
     def test_warshall(self):
-        with self.assertRaises(VerticeInvalidoException):
+        with self.assertRaises(
+             bibgrafo.grafo_exceptions.VerticeInvalidoException):
             self.assertTrue(self.g_p.existe_caminho('J', 'H'))
-        with self.assertRaises(VerticeInvalidoException):
+        with self.assertRaises(
+             bibgrafo.grafo_exceptions.VerticeInvalidoException):
             self.assertTrue(self.g_medio.existe_caminho('11', '1'))
         self.assertTrue(self.pares.existe_caminho('a', 'a'))
         self.assertTrue(self.teste_conexo.existe_caminho('a', 'e'))

@@ -1,7 +1,5 @@
-import math
-
 from bibgrafo.grafo_matriz_adj_dir import GrafoMatrizAdjacenciaDirecionado
-from bibgrafo.grafo_exceptions import *
+import bibgrafo.grafo_exceptions
 
 
 class MeuGrafo(GrafoMatrizAdjacenciaDirecionado):
@@ -16,9 +14,11 @@ class MeuGrafo(GrafoMatrizAdjacenciaDirecionado):
         caminho.
         """
         if raiz not in self.N:
-            raise VerticeInvalidoException(f'O vértice {raiz} não é válido.')
+            raise bibgrafo.grafo_exceptions.VerticeInvalidoException(
+                f'O vértice {raiz} não é válido.')
         elif destino not in self.N:
-            raise VerticeInvalidoException(f'O vértice {destino} não é válido.')
+            raise bibgrafo.grafo_exceptions.VerticeInvalidoException(
+                f'O vértice {destino} não é válido.')
 
         indice_raiz = self.N.index(raiz)
         indice_destino = self.N.index(destino)
@@ -40,20 +40,3 @@ class MeuGrafo(GrafoMatrizAdjacenciaDirecionado):
                             return True
 
         return False
-
-    def caminho_drone(self, raiz, destino, carga_inicial,
-                      carga_maxima, pontos_de_recarga):
-        """
-        Utiliza de uma adaptação do algoritmo de Dijkstra para localizar
-        o menor caminho possível de um drone percorrer levando em
-        consideração o limite de sua bateria.
-        :param raiz: Vértice de onde o drone sai.
-        :param destino: Vértice onde o drone deseja chegar.
-        :param carga_inicial: Carga inicial da bateria do drone.
-        :param carga_maxima: Carga máxima da bateria do drone.
-        :param pontos_de_recarga: Lista com os vértices de ponto de
-        recarga para reabastecimento da bateria do drone.
-        :return: False se não há caminho possível ou uma lista indicando
-        o caminho no formato [v1, a1, v2, a2,..., an, vn].
-        """
-        pass

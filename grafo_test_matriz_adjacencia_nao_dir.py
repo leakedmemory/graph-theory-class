@@ -1,6 +1,6 @@
 import unittest
 
-from bibgrafo.grafo_exceptions import *
+import bibgrafo.grafo_exceptions
 
 from meu_grafo_matriz_adjacencia_nao_dir import MeuGrafo
 
@@ -419,7 +419,8 @@ class TestGrafo(unittest.TestCase):
         self.teste_conexo.adicionaAresta('a8', 'f', 'g')
         self.teste_conexo.adicionaAresta('a9', 'g', 'h')
 
-        self.teste_desconexo = MeuGrafo(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'])
+        self.teste_desconexo = MeuGrafo([
+            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'])
         self.teste_desconexo.adicionaAresta('a1', 'a', 'b')
         self.teste_desconexo.adicionaAresta('a2', 'a', 'd')
         self.teste_desconexo.adicionaAresta('a3', 'b', 'c')
@@ -439,17 +440,23 @@ class TestGrafo(unittest.TestCase):
 
     def test_adiciona_aresta(self):
         self.assertTrue(self.g_p.adicionaAresta('a10', 'J', 'C'))
-        with self.assertRaises(ArestaInvalidaException):
+        with self.assertRaises(
+             bibgrafo.grafo_exceptions.ArestaInvalidaException):
             self.assertTrue(self.g_p.adicionaAresta('b1', '', 'C'))
-        with self.assertRaises(ArestaInvalidaException):
+        with self.assertRaises(
+             bibgrafo.grafo_exceptions.ArestaInvalidaException):
             self.assertTrue(self.g_p.adicionaAresta('b1', 'A', 'C'))
-        with self.assertRaises(ArestaInvalidaException):
+        with self.assertRaises(
+             bibgrafo.grafo_exceptions.ArestaInvalidaException):
             self.g_p.adicionaAresta('')
-        with self.assertRaises(ArestaInvalidaException):
+        with self.assertRaises(
+             bibgrafo.grafo_exceptions.ArestaInvalidaException):
             self.g_p.adicionaAresta('aa-bb')
-        with self.assertRaises(ArestaInvalidaException):
+        with self.assertRaises(
+             bibgrafo.grafo_exceptions.ArestaInvalidaException):
             self.g_p.adicionaAresta('x', 'J', 'V')
-        with self.assertRaises(ArestaInvalidaException):
+        with self.assertRaises(
+             bibgrafo.grafo_exceptions.ArestaInvalidaException):
             self.g_p.adicionaAresta('a1', 'J', 'C')
 
     def test_vertices_nao_adjacentes(self):
@@ -478,7 +485,8 @@ class TestGrafo(unittest.TestCase):
         self.assertEqual(self.g_p.grau('M'), 2)
         self.assertEqual(self.g_p.grau('T'), 3)
         self.assertEqual(self.g_p.grau('Z'), 1)
-        with self.assertRaises(VerticeInvalidoException):
+        with self.assertRaises(
+             bibgrafo.grafo_exceptions.VerticeInvalidoException):
             self.assertEqual(self.g_p.grau('G'), 5)
 
         self.assertEqual(self.g_d.grau('A'), 1)
@@ -515,7 +523,8 @@ class TestGrafo(unittest.TestCase):
                          {'a1', 'a2', 'a3'})
         self.assertEqual(set(self.g_d.arestas_sobre_vertice('C')), set())
         self.assertEqual(set(self.g_d.arestas_sobre_vertice('A')), {'asd'})
-        with self.assertRaises(VerticeInvalidoException):
+        with self.assertRaises(
+             bibgrafo.grafo_exceptions.VerticeInvalidoException):
             self.g_p.arestas_sobre_vertice('A')
 
     def test_eh_completo(self):
@@ -556,12 +565,15 @@ class TestGrafo(unittest.TestCase):
         self.assertEqual(self.com.caminho_euleriano(), ['1', 'a1', '2',
                                                         'a3', '4', 'a4', '3',
                                                         'a2', '1'])
-        self.assertEqual(self.com2.caminho_euleriano(), ['1', 'a1', '2', 'a2', '1'])
+        self.assertEqual(self.com2.caminho_euleriano(),
+                         ['1', 'a1', '2', 'a2', '1'])
         self.assertEqual(self.com3.caminho_euleriano(), ['1', 'a1', '1'])
-        self.assertEqual(self.g_c2.caminho_euleriano(), ['Nina', 'amiga', 'Maria'])
+        self.assertEqual(self.g_c2.caminho_euleriano(),
+                         ['Nina', 'amiga', 'Maria'])
         self.assertEqual(self.slays.caminho_euleriano(),
-                         ['d', 'a3', 'a', 'a1', 'b', 'a5', 'c', 'a2', 'a',
-                          'a4', 'f', 'a8', 'e', 'a7', 'b', 'a6', 'g', 'a9', 'f'])
+                         ['d', 'a3', 'a', 'a1', 'b', 'a5',
+                          'c', 'a2', 'a', 'a4', 'f', 'a8',
+                          'e', 'a7', 'b', 'a6', 'g', 'a9', 'f'])
         self.assertEqual(self.teste_conexo.caminho_euleriano(),
                          ['d', 'a2', 'a', 'a1', 'b', 'a3', 'c',
                           'a4', 'd', 'a5', 'e', 'a6', 'f', 'a8', 'g', 'a9',

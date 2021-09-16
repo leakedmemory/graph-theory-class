@@ -2,7 +2,7 @@ import copy
 
 from bibgrafo.grafo_matriz_adj_nao_dir import \
     GrafoMatrizAdjacenciaNaoDirecionado
-from bibgrafo.grafo_exceptions import *
+import bibgrafo.grafo_exceptions
 
 
 class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
@@ -42,7 +42,8 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
         :raises VerticeInvalidoException: Caso o vértice não exista.
         """
         if v not in self.N:
-            raise VerticeInvalidoException(f'O vértice {v} não é válido.')
+            raise bibgrafo.grafo_exceptionsVerticeInvalidoException(
+                f'O vértice {v} não é válido.')
 
         indice = self.N.index(v)
         grau = 0
@@ -81,7 +82,8 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
         :raises VerticeInvalidoException: Caso o vértice não exista.
         """
         if v not in self.N:
-            raise VerticeInvalidoException(f'O vértice {v} não existe.')
+            raise bibgrafo.grafo_exceptions.VerticeInvalidoException(
+                f'O vértice {v} não existe.')
 
         indice = self.N.index(v)
         arestas = []
@@ -109,7 +111,8 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
 
         return True
 
-    def _elevar_matriz(self, matriz, numero_de_vertices, resultado=None, contador=2):
+    def _elevar_matriz(self, matriz, numero_de_vertices, resultado=None,
+                       contador=2):
         """
         Função recursiva auxiliar utilizada para saber se o grafo é
         conexo. A recursividade é parada quando o número de vértices é
@@ -136,7 +139,8 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
 
         if contador < numero_de_vertices:
             contador += 1
-            util = self._elevar_matriz(matriz, numero_de_vertices, util, contador)
+            util = self._elevar_matriz(matriz, numero_de_vertices,
+                                       util, contador)
 
         return util
 
@@ -174,7 +178,8 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
         :return: None
         """
         if rotulo not in self.listar_arestas():
-            raise ArestaInvalidaException(f'A aresta {rotulo} não existe.')
+            raise bibgrafo.grafo_exceptions.ArestaInvalidaException(
+                f'A aresta {rotulo} não existe.')
 
         for i in range(len(self.M)):
             for j in range(i, len(self.M)):
@@ -243,7 +248,8 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
                 v2 = arestas[rotulo].getV2()
 
                 for vizinho in vizinhos:
-                    if v1 == raiz and v2 == vizinho or v1 == vizinho and v2 == raiz:
+                    if v1 == raiz and v2 == vizinho or v1 == vizinho and \
+                            v2 == raiz:
                         if len(vizinhos) == 1:
                             caminho += [raiz, rotulo]
                             matriz.remove_aresta(rotulo, raiz)
@@ -273,7 +279,8 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
         if len(self.N) == 1 and not self.listar_arestas():
             return False
         elif len(self.N) == 1 and len(self.listar_arestas().keys()) == 1:
-            return [self.N[0], list(self.listar_arestas().keys())[0], self.N[0]]
+            return [self.N[0], list(
+                self.listar_arestas().keys())[0], self.N[0]]
         elif len(self.N) == 1 and len(self.listar_arestas().keys()) > 1:
             return False
 

@@ -1,5 +1,5 @@
 from bibgrafo.grafo_lista_adjacencia import GrafoListaAdjacencia
-from bibgrafo.grafo_exceptions import *
+import bibgrafo.grafo_exceptions
 
 
 class MeuGrafo(GrafoListaAdjacencia):
@@ -79,12 +79,12 @@ class MeuGrafo(GrafoListaAdjacencia):
             v2 = self.A[a].getV2()
 
             if v1 == chave and v2 == dicionario[
-                chave] and a not in a_percorridas:
+               chave] and a not in a_percorridas:
                 a_percorridas += [a]
                 caminho += [a, v2]
                 self._montar_ciclo(dicionario, caminho, v2, a_percorridas)
             elif v1 == dicionario[
-                chave] and v2 == chave and a not in a_percorridas:
+                 chave] and v2 == chave and a not in a_percorridas:
                 a_percorridas += [a]
                 caminho += [a, v1]
                 self._montar_ciclo(dicionario, caminho, v1, a_percorridas)
@@ -220,7 +220,7 @@ class MeuGrafo(GrafoListaAdjacencia):
         exista no grafo.
         """
         if vertice not in self.N:
-            raise VerticeInvalidoException
+            raise bibgrafo.grafo_exceptions.VerticeInvalidoException
 
         grau = 0
 
@@ -261,7 +261,8 @@ class MeuGrafo(GrafoListaAdjacencia):
         exista no grafo.
         """
         if vertice not in self.N:
-            raise VerticeInvalidoException(f'O vértice {vertice} é inválido.')
+            raise bibgrafo.grafo_exceptions.VerticeInvalidoException(
+                f'O vértice {vertice} é inválido.')
 
         arestas = []
 
@@ -297,7 +298,8 @@ class MeuGrafo(GrafoListaAdjacencia):
         existir no grafo.
         """
         if raiz not in self.N:
-            raise VerticeInvalidoException(f'O vértice {raiz} é inválido.')
+            raise bibgrafo.grafo_exceptions.VerticeInvalidoException(
+                f'O vértice {raiz} é inválido.')
 
         dfs = MeuGrafo(self.N)
 
@@ -317,7 +319,8 @@ class MeuGrafo(GrafoListaAdjacencia):
         existir no grafo.
         """
         if raiz not in self.N:
-            raise VerticeInvalidoException(f'O vértice {raiz} é inválido.')
+            raise bibgrafo.grafo_exceptions.VerticeInvalidoException(
+                f'O vértice {raiz} é inválido.')
 
         bfs = MeuGrafo([raiz])
         visitados = [raiz]
