@@ -1,3 +1,4 @@
 Pipfile
 lixo.py
 /roteiros
+__pycache__/

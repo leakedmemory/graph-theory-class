@@ -3,7 +3,6 @@ import bibgrafo.grafo_exceptions
 
 
 class MeuGrafo(GrafoListaAdjacencia):
-
     def _listar_com_rotulo(self):
         """
         Produz com uma lista das arestas do grafo no seguinte formato:
@@ -46,8 +45,7 @@ class MeuGrafo(GrafoListaAdjacencia):
                 dfs.adicionaAresta(aresta[1], aresta[0], aresta[-1])
                 self._dfs_util(aresta[-1], dfs, percorridos, adjacentes)
 
-    def _dfs_ciclo(self, raiz, dicionario, v_percorridos, a_percorridas,
-                   adjacentes):
+    def _dfs_ciclo(self, raiz, dicionario, v_percorridos, a_percorridas, adjacentes):
         v_percorridos += [raiz]
         rotulos = []
 
@@ -61,10 +59,10 @@ class MeuGrafo(GrafoListaAdjacencia):
             if aresta[-1] not in v_percorridos:
                 a_percorridas += [aresta[1]]
                 dicionario[aresta[-1]] = raiz
-                self._dfs_ciclo(aresta[-1], dicionario, v_percorridos,
-                                a_percorridas, adjacentes)
-            elif aresta[-1] == v_percorridos[0] and aresta[1] not in \
-                    a_percorridas:
+                self._dfs_ciclo(
+                    aresta[-1], dicionario, v_percorridos, a_percorridas, adjacentes
+                )
+            elif aresta[-1] == v_percorridos[0] and aresta[1] not in a_percorridas:
                 dicionario[aresta[-1]] = raiz
                 return
 
@@ -78,13 +76,11 @@ class MeuGrafo(GrafoListaAdjacencia):
             v1 = self.A[a].getV1()
             v2 = self.A[a].getV2()
 
-            if v1 == chave and v2 == dicionario[
-               chave] and a not in a_percorridas:
+            if v1 == chave and v2 == dicionario[chave] and a not in a_percorridas:
                 a_percorridas += [a]
                 caminho += [a, v2]
                 self._montar_ciclo(dicionario, caminho, v2, a_percorridas)
-            elif v1 == dicionario[
-                 chave] and v2 == chave and a not in a_percorridas:
+            elif v1 == dicionario[chave] and v2 == chave and a not in a_percorridas:
                 a_percorridas += [a]
                 caminho += [a, v1]
                 self._montar_ciclo(dicionario, caminho, v1, a_percorridas)
@@ -196,7 +192,7 @@ class MeuGrafo(GrafoListaAdjacencia):
 
         for key in tmp.keys():
             for v in tmp[key]:
-                nao_adjacentes.append(f'{key}-{v}')
+                nao_adjacentes.append(f"{key}-{v}")
 
         return nao_adjacentes
 
@@ -241,7 +237,7 @@ class MeuGrafo(GrafoListaAdjacencia):
         combinacoes = []
 
         for a in self.A:
-            aresta = f'{self.A[a].getV1()}-{self.A[a].getV2()}'
+            aresta = f"{self.A[a].getV1()}-{self.A[a].getV2()}"
 
             if aresta in combinacoes:
                 return True
@@ -262,7 +258,8 @@ class MeuGrafo(GrafoListaAdjacencia):
         """
         if vertice not in self.N:
             raise bibgrafo.grafo_exceptions.VerticeInvalidoException(
-                f'O vértice {vertice} é inválido.')
+                f"O vértice {vertice} é inválido."
+            )
 
         arestas = []
 
@@ -299,7 +296,8 @@ class MeuGrafo(GrafoListaAdjacencia):
         """
         if raiz not in self.N:
             raise bibgrafo.grafo_exceptions.VerticeInvalidoException(
-                f'O vértice {raiz} é inválido.')
+                f"O vértice {raiz} é inválido."
+            )
 
         dfs = MeuGrafo(self.N)
 
@@ -320,7 +318,8 @@ class MeuGrafo(GrafoListaAdjacencia):
         """
         if raiz not in self.N:
             raise bibgrafo.grafo_exceptions.VerticeInvalidoException(
-                f'O vértice {raiz} é inválido.')
+                f"O vértice {raiz} é inválido."
+            )
 
         bfs = MeuGrafo([raiz])
         visitados = [raiz]
@@ -365,12 +364,10 @@ class MeuGrafo(GrafoListaAdjacencia):
             dicionario = {n: None}
             v_percorridos = []
             a_percorridas = []
-            self._dfs_ciclo(n, dicionario, v_percorridos, a_percorridas,
-                            adjacentes)
+            self._dfs_ciclo(n, dicionario, v_percorridos, a_percorridas, adjacentes)
 
             chaves = list(dicionario.keys())
-            if dicionario[chaves[0]] is None and n == \
-                    self.N[-1]:
+            if dicionario[chaves[0]] is None and n == self.N[-1]:
                 return False
             elif dicionario[chaves[0]] is not None:
                 caminho = []
@@ -389,7 +386,7 @@ class MeuGrafo(GrafoListaAdjacencia):
             self._dfs_caminho(n, v_percorridos, caminho)
 
             if tamanho <= len(caminho[1::2]):
-                return caminho[:2*tamanho+1]
+                return caminho[: 2 * tamanho + 1]
 
         return False
 
