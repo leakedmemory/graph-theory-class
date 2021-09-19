@@ -1,6 +1,6 @@
 import unittest
 
-import bibgrafo.grafo_exceptions
+from bibgrafo import grafo_exceptions
 
 from meu_grafo_matriz_adjacencia_dir import MeuGrafo
 
@@ -594,9 +594,9 @@ class TestGrafo(unittest.TestCase):
         self.pares.adicionaAresta("a6", "f", "a")
 
     def test_warshall(self):
-        with self.assertRaises(bibgrafo.grafo_exceptions.VerticeInvalidoException):
+        with self.assertRaises(grafo_exceptions.VerticeInvalidoException):
             self.assertTrue(self.g_p.existe_caminho("J", "H"))
-        with self.assertRaises(bibgrafo.grafo_exceptions.VerticeInvalidoException):
+        with self.assertRaises(grafo_exceptions.VerticeInvalidoException):
             self.assertTrue(self.g_medio.existe_caminho("11", "1"))
         self.assertTrue(self.pares.existe_caminho("a", "a"))
         self.assertTrue(self.teste_conexo.existe_caminho("a", "e"))

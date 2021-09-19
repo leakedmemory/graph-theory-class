@@ -1,7 +1,9 @@
 import copy
+import math
+import bibgrafo
 
 from bibgrafo.grafo_matriz_adj_nao_dir import GrafoMatrizAdjacenciaNaoDirecionado
-import bibgrafo.grafo_exceptions
+from bibgrafo import grafo_exceptions
 
 
 class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
@@ -40,7 +42,7 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
         :raises VerticeInvalidoException: Caso o vértice não exista.
         """
         if v not in self.N:
-            raise bibgrafo.grafo_exceptions.VerticeInvalidoException(
+            raise grafo_exceptions.VerticeInvalidoException(
                 f"O vértice {v} não é válido."
             )
 
@@ -71,17 +73,17 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
 
         return False
 
-    def arestas_sobre_vertice(self, v):
+    def rotulos_sobre_vertice(self, v):
         """
         Provê uma lista que contém os rótulos das arestas que incidem
         sobre o vértice passado como parâmetro.
         :param v: O vértice a ser analisado.
-        :return: Uma lista os rótulos das arestas que incidem sobre o
-        vértice.
+        :return: Uma lista com os rótulos das arestas que incidem sobre
+        o vértice.
         :raises VerticeInvalidoException: Caso o vértice não exista.
         """
         if v not in self.N:
-            raise bibgrafo.grafo_exceptions.VerticeInvalidoException(
+            raise grafo_exceptions.VerticeInvalidoException(
                 f"O vértice {v} não existe."
             )
 
@@ -93,6 +95,31 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
 
         for j in range(indice, len(self.M)):
             arestas += list(self.M[indice][j].keys())
+
+        return arestas
+
+    def arestas_sobre_vertice(self, v):
+        """
+        Provê uma lista que contém os rótulos das arestas que incidem
+        sobre o vértice passado como parâmetro.
+        :param v: O vértice a ser analisado.
+        :return: Uma lista com os objetos aresta que incidem sobre o
+        vértice.
+        :raises VerticeInvalidoException: Caso o vértice não exista.
+        """
+        if v not in self.N:
+            raise grafo_exceptions.VerticeInvalidoException(
+                f"O vértice {v} não existe."
+            )
+
+        indice = self.N.index(v)
+        arestas = []
+
+        for i in range(indice):
+            arestas += list(self.M[i][indice].values())
+
+        for j in range(indice, len(self.M)):
+            arestas += list(self.M[indice][j].values())
 
         return arestas
 
@@ -179,7 +206,7 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
         :return: None
         """
         if rotulo not in self.listar_arestas():
-            raise bibgrafo.grafo_exceptions.ArestaInvalidaException(
+            raise grafo_exceptions.ArestaInvalidaException(
                 f"A aresta {rotulo} não existe."
             )
 
@@ -312,3 +339,82 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
 
                 if not copia.listar_arestas():
                     return caminho
+
+    def vertice_com_menor_aresta(self):
+        dicionario = {v: math.inf for v in self.N}
+
+        for i in range(len(self.M)):
+            for j in range(i, len(self.M)):
+                objetos = list(self.M[i][j].values())
+                for objeto in objetos:
+                    rotulo = objeto.getV1()
+                    if objeto.getPeso() < dicionario[rotulo]:
+                        dicionario[rotulo] = objeto.getPeso()
+
+        return sorted(dicionario.items(), key=lambda x: x[1])[0][0]
+
+    @staticmethod
+    def _is_vertice(v1, v2, vertice):
+        return v1 == vertice or v2 == vertice
+
+    def aresta_menor_peso_em_vertice(self, vertice):
+        arestas = self.listar_arestas()
+        menor_aresta = None
+        menor_rotulo = ""
+
+        for rotulo, aresta in arestas.items():
+            v1 = aresta.getV1()
+            v2 = aresta.getV2()
+
+            if self._is_vertice(v1, v2, vertice) and (
+                menor_aresta is None or menor_aresta.getPeso() > aresta.getPeso()
+            ):
+                menor_aresta = aresta
+                menor_rotulo = rotulo
+
+        return menor_rotulo, menor_aresta
+
+    def _menor_aresta(self, vertices):
+        d = {}
+
+        for vertice in vertices:
+            a, b = self.aresta_menor_peso_em_vertice(vertice)
+            if b is not None:
+                d[a] = b
+
+        return sorted(d.items(), key=lambda x: x[1].getPeso())[0]
+
+    def prim(self):
+        if not self.conexo():
+            raise grafo_exceptions.MatrizInvalidaException(
+                f"O grafo matriz adjacência não é conexo."
+            )
+
+        tree = MeuGrafo(self.N.copy())
+        copia = copy.deepcopy(self)
+        v_visitados = [copia.vertice_com_menor_aresta()]
+        v_nao_visitados = tree.N.copy()
+        v_nao_visitados.remove(v_visitados[0])
+
+        while v_nao_visitados:
+            rotulo, aresta = copia._menor_aresta(v_visitados)
+
+            tree.adicionaAresta(
+                aresta.getRotulo(),
+                aresta.getV1(),
+                aresta.getV2(),
+                aresta.getPeso(),
+            )
+
+            if aresta.getV1() in v_visitados and aresta.getV2() not in v_visitados:
+                v_nao_visitados.remove(aresta.getV2())
+                v_visitados.append(aresta.getV2())
+                copia.remove_aresta(rotulo, aresta.getV2())
+            elif aresta.getV2() in v_visitados and aresta.getV1() not in v_visitados:
+                v_nao_visitados.remove(aresta.getV1())
+                v_visitados.append(aresta.getV1())
+                copia.remove_aresta(rotulo, aresta.getV1())
+            else:
+                copia.remove_aresta(rotulo, aresta.getV1())
+
+        return tree

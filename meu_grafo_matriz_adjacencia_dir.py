@@ -1,5 +1,5 @@
 from bibgrafo.grafo_matriz_adj_dir import GrafoMatrizAdjacenciaDirecionado
-import bibgrafo.grafo_exceptions
+from bibgrafo import grafo_exceptions
 
 
 class MeuGrafo(GrafoMatrizAdjacenciaDirecionado):
@@ -13,11 +13,11 @@ class MeuGrafo(GrafoMatrizAdjacenciaDirecionado):
         caminho.
         """
         if raiz not in self.N:
-            raise bibgrafo.grafo_exceptions.VerticeInvalidoException(
+            raise grafo_exceptions.VerticeInvalidoException(
                 f"O vértice {raiz} não é válido."
             )
         elif destino not in self.N:
-            raise bibgrafo.grafo_exceptions.VerticeInvalidoException(
+            raise grafo_exceptions.VerticeInvalidoException(
                 f"O vértice {destino} não é válido."
             )
 

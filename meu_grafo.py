@@ -1,5 +1,5 @@
 from bibgrafo.grafo_lista_adjacencia import GrafoListaAdjacencia
-import bibgrafo.grafo_exceptions
+from bibgrafo import grafo_exceptions
 
 
 class MeuGrafo(GrafoListaAdjacencia):
@@ -216,7 +216,7 @@ class MeuGrafo(GrafoListaAdjacencia):
         exista no grafo.
         """
         if vertice not in self.N:
-            raise bibgrafo.grafo_exceptions.VerticeInvalidoException
+            raise grafo_exceptions.VerticeInvalidoException
 
         grau = 0
 
@@ -257,7 +257,7 @@ class MeuGrafo(GrafoListaAdjacencia):
         exista no grafo.
         """
         if vertice not in self.N:
-            raise bibgrafo.grafo_exceptions.VerticeInvalidoException(
+            raise grafo_exceptions.VerticeInvalidoException(
                 f"O vértice {vertice} é inválido."
             )
 
@@ -295,7 +295,7 @@ class MeuGrafo(GrafoListaAdjacencia):
         existir no grafo.
         """
         if raiz not in self.N:
-            raise bibgrafo.grafo_exceptions.VerticeInvalidoException(
+            raise grafo_exceptions.VerticeInvalidoException(
                 f"O vértice {raiz} é inválido."
             )
 
@@ -317,7 +317,7 @@ class MeuGrafo(GrafoListaAdjacencia):
         existir no grafo.
         """
         if raiz not in self.N:
-            raise bibgrafo.grafo_exceptions.VerticeInvalidoException(
+            raise grafo_exceptions.VerticeInvalidoException(
                 f"O vértice {raiz} é inválido."
             )
 

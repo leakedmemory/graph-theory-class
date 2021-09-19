@@ -1,6 +1,6 @@
 import unittest
 
-import bibgrafo.grafo_exceptions
+from bibgrafo import grafo_exceptions
 
 from meu_grafo_matriz_adjacencia_nao_dir import MeuGrafo
 
@@ -593,19 +593,196 @@ class TestGrafo(unittest.TestCase):
         self.pares.adicionaAresta("a5", "d", "e")
         self.pares.adicionaAresta("a6", "e", "f")
 
+        # Grafos com peso
+        self.peso1 = MeuGrafo(["a", "b", "c", "d", "e", "f"])
+        self.peso1.adicionaAresta("a1", "a", "b", 4)
+        self.peso1.adicionaAresta("a2", "a", "f", 5)
+        self.peso1.adicionaAresta("a3", "b", "c", 2)
+        self.peso1.adicionaAresta("a4", "c", "d", 3)
+        self.peso1.adicionaAresta("a5", "d", "e", 7)
+        self.peso1.adicionaAresta("a6", "e", "f", 9)
+
+        self.peso2 = MeuGrafo(["a", "b", "c", "d", "e", "f", "g", "h"])
+        self.peso2.adicionaAresta("a1", "a", "b", 9)
+        self.peso2.adicionaAresta("a2", "a", "g", 4)
+        self.peso2.adicionaAresta("a3", "b", "c", 6)
+        self.peso2.adicionaAresta("a4", "b", "g", 10)
+        self.peso2.adicionaAresta("a5", "b", "h", 7)
+        self.peso2.adicionaAresta("a6", "c", "d", 8)
+        self.peso2.adicionaAresta("a7", "c", "e", 12)
+        self.peso2.adicionaAresta("a8", "d", "e", 14)
+        self.peso2.adicionaAresta("a9", "e", "f", 2)
+        self.peso2.adicionaAresta("a10", "f", "g", 1)
+        self.peso2.adicionaAresta("a11", "f", "h", 2)
+
+        self.peso3 = MeuGrafo(
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12",
+                "13",
+                "14",
+                "15",
+                "16",
+                "17",
+                "18",
+                "19",
+                "20",
+                "21",
+                "22",
+                "23",
+                "24",
+                "25",
+                "26",
+                "27",
+                "28",
+                "29",
+                "30",
+            ]
+        )
+        self.peso3.adicionaAresta("a1", "1", "2", 4)
+        self.peso3.adicionaAresta("a2", "2", "3", 3)
+        self.peso3.adicionaAresta("a3", "1", "4", 9)
+        self.peso3.adicionaAresta("a4", "3", "4", 5)
+        self.peso3.adicionaAresta("a5", "3", "5", 14)
+        self.peso3.adicionaAresta("a6", "3", "8", 6)
+        self.peso3.adicionaAresta("a7", "8", "12", 4)
+        self.peso3.adicionaAresta("a8", "8", "9", 15)
+        self.peso3.adicionaAresta("a9", "8", "11", 11)
+        self.peso3.adicionaAresta("a10", "12", "13", 13)
+        self.peso3.adicionaAresta("a11", "13", "14", 13)
+        self.peso3.adicionaAresta("a12", "14", "16", 8)
+        self.peso3.adicionaAresta("a13", "14", "15", 3)
+        self.peso3.adicionaAresta("a14", "4", "6", 6)
+        self.peso3.adicionaAresta("a15", "6", "30", 2)
+        self.peso3.adicionaAresta("a16", "30", "29", 14)
+        self.peso3.adicionaAresta("a17", "29", "28", 2)
+        self.peso3.adicionaAresta("a18", "28", "25", 12)
+        self.peso3.adicionaAresta("a19", "28", "27", 2)
+        self.peso3.adicionaAresta("a20", "27", "26", 5)
+        self.peso3.adicionaAresta("a21", "26", "25", 12)
+        self.peso3.adicionaAresta("a22", "25", "23", 8)
+        self.peso3.adicionaAresta("a23", "23", "24", 4)
+        self.peso3.adicionaAresta("a24", "23", "7", 3)
+        self.peso3.adicionaAresta("a25", "7", "5", 7)
+        self.peso3.adicionaAresta("a26", "23", "22", 2)
+        self.peso3.adicionaAresta("a27", "22", "21", 15)
+        self.peso3.adicionaAresta("a28", "21", "20", 11)
+        self.peso3.adicionaAresta("a29", "20", "19", 6)
+        self.peso3.adicionaAresta("a30", "19", "17", 8)
+        self.peso3.adicionaAresta("a31", "17", "16", 9)
+        self.peso3.adicionaAresta("a32", "17", "18", 11)
+        self.peso3.adicionaAresta("a33", "18", "19", 8)
+        self.peso3.adicionaAresta("a34", "20", "10", 12)
+        self.peso3.adicionaAresta("a35", "10", "9", 2)
+        self.peso3.adicionaAresta("a36", "10", "11", 9)
+
+        # Grafos para prim
+        self.prim1 = MeuGrafo(["a", "b", "c", "d", "e", "f"])
+        self.prim1.adicionaAresta("a1", "a", "b", 4)
+        self.prim1.adicionaAresta("a2", "a", "f", 5)
+        self.prim1.adicionaAresta("a3", "b", "c", 2)
+        self.prim1.adicionaAresta("a4", "c", "d", 3)
+        self.prim1.adicionaAresta("a5", "d", "e", 7)
+
+        self.prim2 = MeuGrafo(["a", "b", "c", "d", "e", "f", "g", "h"])
+        self.prim2.adicionaAresta("a2", "a", "g", 4)
+        self.prim2.adicionaAresta("a3", "b", "c", 6)
+        self.prim2.adicionaAresta("a5", "b", "h", 7)
+        self.prim2.adicionaAresta("a6", "c", "d", 8)
+        self.prim2.adicionaAresta("a9", "e", "f", 2)
+        self.prim2.adicionaAresta("a10", "f", "g", 1)
+        self.prim2.adicionaAresta("a11", "f", "h", 2)
+
+        self.prim3 = MeuGrafo(
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12",
+                "13",
+                "14",
+                "15",
+                "16",
+                "17",
+                "18",
+                "19",
+                "20",
+                "21",
+                "22",
+                "23",
+                "24",
+                "25",
+                "26",
+                "27",
+                "28",
+                "29",
+                "30",
+            ]
+        )
+        self.prim3.adicionaAresta("a1", "1", "2", 4)
+        self.prim3.adicionaAresta("a2", "2", "3", 3)
+        self.prim3.adicionaAresta("a3", "1", "4", 9)
+        self.prim3.adicionaAresta("a4", "3", "4", 5)
+        self.prim3.adicionaAresta("a6", "3", "8", 6)
+        self.prim3.adicionaAresta("a7", "8", "12", 4)
+        self.prim3.adicionaAresta("a9", "8", "11", 11)
+        self.prim3.adicionaAresta("a10", "12", "13", 13)
+        self.prim3.adicionaAresta("a11", "13", "14", 13)
+        self.prim3.adicionaAresta("a12", "14", "16", 8)
+        self.prim3.adicionaAresta("a13", "14", "15", 3)
+        self.prim3.adicionaAresta("a14", "4", "6", 6)
+        self.prim3.adicionaAresta("a15", "6", "30", 2)
+        self.prim3.adicionaAresta("a16", "30", "29", 14)
+        self.prim3.adicionaAresta("a17", "29", "28", 2)
+        self.prim3.adicionaAresta("a18", "28", "25", 12)
+        self.prim3.adicionaAresta("a19", "28", "27", 2)
+        self.prim3.adicionaAresta("a20", "27", "26", 5)
+        self.prim3.adicionaAresta("a22", "25", "23", 8)
+        self.prim3.adicionaAresta("a23", "23", "24", 4)
+        self.prim3.adicionaAresta("a24", "23", "7", 3)
+        self.prim3.adicionaAresta("a25", "7", "5", 7)
+        self.prim3.adicionaAresta("a26", "23", "22", 2)
+        self.prim3.adicionaAresta("a28", "21", "20", 11)
+        self.prim3.adicionaAresta("a29", "20", "19", 6)
+        self.prim3.adicionaAresta("a30", "19", "17", 8)
+        self.prim3.adicionaAresta("a31", "17", "16", 9)
+        self.prim3.adicionaAresta("a32", "17", "18", 11)
+        self.prim3.adicionaAresta("a33", "18", "19", 8)
+        self.prim3.adicionaAresta("a34", "20", "10", 12)
+        self.prim3.adicionaAresta("a35", "10", "9", 2)
+        self.prim3.adicionaAresta("a36", "10", "11", 9)
+
     def test_adiciona_aresta(self):
         self.assertTrue(self.g_p.adicionaAresta("a10", "J", "C"))
-        with self.assertRaises(bibgrafo.grafo_exceptions.ArestaInvalidaException):
+        with self.assertRaises(grafo_exceptions.ArestaInvalidaException):
             self.assertTrue(self.g_p.adicionaAresta("b1", "", "C"))
-        with self.assertRaises(bibgrafo.grafo_exceptions.ArestaInvalidaException):
+        with self.assertRaises(grafo_exceptions.ArestaInvalidaException):
             self.assertTrue(self.g_p.adicionaAresta("b1", "A", "C"))
-        with self.assertRaises(bibgrafo.grafo_exceptions.ArestaInvalidaException):
+        with self.assertRaises(grafo_exceptions.ArestaInvalidaException):
             self.g_p.adicionaAresta("")
-        with self.assertRaises(bibgrafo.grafo_exceptions.ArestaInvalidaException):
+        with self.assertRaises(grafo_exceptions.ArestaInvalidaException):
             self.g_p.adicionaAresta("aa-bb")
-        with self.assertRaises(bibgrafo.grafo_exceptions.ArestaInvalidaException):
+        with self.assertRaises(grafo_exceptions.ArestaInvalidaException):
             self.g_p.adicionaAresta("x", "J", "V")
-        with self.assertRaises(bibgrafo.grafo_exceptions.ArestaInvalidaException):
+        with self.assertRaises(grafo_exceptions.ArestaInvalidaException):
             self.g_p.adicionaAresta("a1", "J", "C")
 
     def test_vertices_nao_adjacentes(self):
@@ -650,7 +827,7 @@ class TestGrafo(unittest.TestCase):
         self.assertEqual(self.g_p.grau("M"), 2)
         self.assertEqual(self.g_p.grau("T"), 3)
         self.assertEqual(self.g_p.grau("Z"), 1)
-        with self.assertRaises(bibgrafo.grafo_exceptions.VerticeInvalidoException):
+        with self.assertRaises(grafo_exceptions.VerticeInvalidoException):
             self.assertEqual(self.g_p.grau("G"), 5)
 
         self.assertEqual(self.g_d.grau("A"), 1)
@@ -678,17 +855,17 @@ class TestGrafo(unittest.TestCase):
         self.assertTrue(self.g_l1.ha_paralelas())
 
     def test_arestas_sobre_vertice(self):
-        self.assertEqual(set(self.g_p.arestas_sobre_vertice("J")), {"a1"})
+        self.assertEqual(set(self.g_p.rotulos_sobre_vertice("J")), {"a1"})
         self.assertEqual(
-            set(self.g_p.arestas_sobre_vertice("C")),
+            set(self.g_p.rotulos_sobre_vertice("C")),
             {"a1", "a2", "a3", "a4", "a5", "a6", "a7"},
         )
-        self.assertEqual(set(self.g_p.arestas_sobre_vertice("M")), {"a7", "a8"})
-        self.assertEqual(set(self.g_l2.arestas_sobre_vertice("B")), {"a1", "a2", "a3"})
-        self.assertEqual(set(self.g_d.arestas_sobre_vertice("C")), set())
-        self.assertEqual(set(self.g_d.arestas_sobre_vertice("A")), {"asd"})
-        with self.assertRaises(bibgrafo.grafo_exceptions.VerticeInvalidoException):
-            self.g_p.arestas_sobre_vertice("A")
+        self.assertEqual(set(self.g_p.rotulos_sobre_vertice("M")), {"a7", "a8"})
+        self.assertEqual(set(self.g_l2.rotulos_sobre_vertice("B")), {"a1", "a2", "a3"})
+        self.assertEqual(set(self.g_d.rotulos_sobre_vertice("C")), set())
+        self.assertEqual(set(self.g_d.rotulos_sobre_vertice("A")), {"asd"})
+        with self.assertRaises(grafo_exceptions.VerticeInvalidoException):
+            self.g_p.rotulos_sobre_vertice("A")
 
     def test_eh_completo(self):
         self.assertFalse(self.g_p.eh_completo())
@@ -829,6 +1006,13 @@ class TestGrafo(unittest.TestCase):
         self.assertFalse(self.g_c.caminho_euleriano())
         self.assertFalse(self.g_c3.caminho_euleriano())
         self.assertFalse(self.teste_desconexo.caminho_euleriano())
+
+    def test_prim(self):
+        with self.assertRaises(grafo_exceptions.MatrizInvalidaException):
+            self.g_d.prim()
+        self.assertEqual(self.peso1.prim().M, self.prim1.M)
+        self.assertEqual(self.peso2.prim().M, self.prim2.M)
+        self.assertEqual(self.peso3.prim().M, self.prim3.M)
 
 
 if __name__ == "__main__":

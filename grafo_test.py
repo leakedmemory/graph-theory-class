@@ -1,6 +1,6 @@
 import unittest
 
-import bibgrafo.grafo_exceptions
+from bibgrafo import grafo_exceptions
 
 from meu_grafo import MeuGrafo
 
@@ -554,17 +554,17 @@ class TestGrafo(unittest.TestCase):
 
     def test_adiciona_aresta(self):
         self.assertTrue(self.g_p.adicionaAresta("a10", "J", "C"))
-        with self.assertRaises(bibgrafo.grafo_exceptions.ArestaInvalidaException):
+        with self.assertRaises(grafo_exceptions.ArestaInvalidaException):
             self.assertTrue(self.g_p.adicionaAresta("b1", "", "C"))
-        with self.assertRaises(bibgrafo.grafo_exceptions.ArestaInvalidaException):
+        with self.assertRaises(grafo_exceptions.ArestaInvalidaException):
             self.assertTrue(self.g_p.adicionaAresta("b1", "A", "C"))
-        with self.assertRaises(bibgrafo.grafo_exceptions.ArestaInvalidaException):
+        with self.assertRaises(grafo_exceptions.ArestaInvalidaException):
             self.g_p.adicionaAresta("")
-        with self.assertRaises(bibgrafo.grafo_exceptions.ArestaInvalidaException):
+        with self.assertRaises(grafo_exceptions.ArestaInvalidaException):
             self.g_p.adicionaAresta("aa-bb")
-        with self.assertRaises(bibgrafo.grafo_exceptions.ArestaInvalidaException):
+        with self.assertRaises(grafo_exceptions.ArestaInvalidaException):
             self.g_p.adicionaAresta("x", "J", "V")
-        with self.assertRaises(bibgrafo.grafo_exceptions.ArestaInvalidaException):
+        with self.assertRaises(grafo_exceptions.ArestaInvalidaException):
             self.g_p.adicionaAresta("a1", "J", "C")
 
     def test_vertices_nao_adjacentes(self):
@@ -609,7 +609,7 @@ class TestGrafo(unittest.TestCase):
         self.assertEqual(self.g_p.grau("M"), 2)
         self.assertEqual(self.g_p.grau("T"), 3)
         self.assertEqual(self.g_p.grau("Z"), 1)
-        with self.assertRaises(bibgrafo.grafo_exceptions.VerticeInvalidoException):
+        with self.assertRaises(grafo_exceptions.VerticeInvalidoException):
             self.assertEqual(self.g_p.grau("G"), 5)
 
         self.assertEqual(self.g_d.grau("A"), 1)
@@ -646,7 +646,7 @@ class TestGrafo(unittest.TestCase):
         self.assertEqual(set(self.g_l2.arestas_sobre_vertice("B")), {"a1", "a2", "a3"})
         self.assertEqual(set(self.g_d.arestas_sobre_vertice("C")), set())
         self.assertEqual(set(self.g_d.arestas_sobre_vertice("A")), {"asd"})
-        with self.assertRaises(bibgrafo.grafo_exceptions.VerticeInvalidoException):
+        with self.assertRaises(grafo_exceptions.VerticeInvalidoException):
             self.g_p.arestas_sobre_vertice("A")
 
     def test_eh_completo(self):
