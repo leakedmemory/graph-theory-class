@@ -95,4 +95,5 @@ pares.adicionaAresta("a4", "c", "d", 3)
 pares.adicionaAresta("a5", "d", "e", 7)
 pares.adicionaAresta("a6", "e", "f", 9)
 
-print(peso3.prim())
+# print(peso3.prim())
+print(peso3.kruskal())

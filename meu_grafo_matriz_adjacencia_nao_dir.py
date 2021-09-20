@@ -340,49 +340,15 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
                 if not copia.listar_arestas():
                     return caminho
 
-    def vertice_com_menor_aresta(self):
-        dicionario = {v: math.inf for v in self.N}
+    def _matriz_completa(self):
+        grafo = [[0 for _ in range(len(self.M))] for _ in range(len(self.M))]
 
         for i in range(len(self.M)):
             for j in range(i, len(self.M)):
-                objetos = list(self.M[i][j].values())
-                for objeto in objetos:
-                    rotulo = objeto.getV1()
-                    if objeto.getPeso() < dicionario[rotulo]:
-                        dicionario[rotulo] = objeto.getPeso()
+                grafo[i][j] = self.M[i][j]
+                grafo[j][i] = self.M[i][j]
 
-        return sorted(dicionario.items(), key=lambda x: x[1])[0][0]
-
-    @staticmethod
-    def _is_vertice(v1, v2, vertice):
-        return v1 == vertice or v2 == vertice
-
-    def aresta_menor_peso_em_vertice(self, vertice):
-        arestas = self.listar_arestas()
-        menor_aresta = None
-        menor_rotulo = ""
-
-        for rotulo, aresta in arestas.items():
-            v1 = aresta.getV1()
-            v2 = aresta.getV2()
-
-            if self._is_vertice(v1, v2, vertice) and (
-                menor_aresta is None or menor_aresta.getPeso() > aresta.getPeso()
-            ):
-                menor_aresta = aresta
-                menor_rotulo = rotulo
-
-        return menor_rotulo, menor_aresta
-
-    def _menor_aresta(self, vertices):
-        d = {}
-
-        for vertice in vertices:
-            a, b = self.aresta_menor_peso_em_vertice(vertice)
-            if b is not None:
-                d[a] = b
-
-        return sorted(d.items(), key=lambda x: x[1].getPeso())[0]
+        return grafo
 
     def prim(self):
         if not self.conexo():
@@ -391,30 +357,89 @@ class MeuGrafo(GrafoMatrizAdjacenciaNaoDirecionado):
             )
 
         tree = MeuGrafo(self.N.copy())
-        copia = copy.deepcopy(self)
-        v_visitados = [copia.vertice_com_menor_aresta()]
-        v_nao_visitados = tree.N.copy()
-        v_nao_visitados.remove(v_visitados[0])
+        grafo = self._matriz_completa()
+        numero_vertices = len(self.N)
+        atual = [0 for _ in range(numero_vertices)]
+        n_aresta = 0
+        atual[n_aresta] = True
 
-        while v_nao_visitados:
-            rotulo, aresta = copia._menor_aresta(v_visitados)
+        while n_aresta < numero_vertices - 1:
+            minimo = math.inf
+            a = b = 0
 
+            for i in range(numero_vertices):
+                if atual[i]:
+                    for j in range(numero_vertices):
+                        if not atual[j] and grafo[i][j]:
+                            if (
+                                minimo
+                                > grafo[i][j][list(grafo[i][j].keys())[0]].getPeso()
+                            ):
+                                minimo = grafo[i][j][
+                                    list(grafo[i][j].keys())[0]
+                                ].getPeso()
+                                a = i
+                                b = j
+
+            rotulo = list(grafo[a][b].keys())[0]
+            aresta = grafo[a][b][list(grafo[a][b].keys())[0]]
             tree.adicionaAresta(
-                aresta.getRotulo(),
-                aresta.getV1(),
-                aresta.getV2(),
-                aresta.getPeso(),
+                rotulo, aresta.getV1(), aresta.getV2(), aresta.getPeso()
             )
 
-            if aresta.getV1() in v_visitados and aresta.getV2() not in v_visitados:
-                v_nao_visitados.remove(aresta.getV2())
-                v_visitados.append(aresta.getV2())
-                copia.remove_aresta(rotulo, aresta.getV2())
-            elif aresta.getV2() in v_visitados and aresta.getV1() not in v_visitados:
-                v_nao_visitados.remove(aresta.getV1())
-                v_visitados.append(aresta.getV1())
-                copia.remove_aresta(rotulo, aresta.getV1())
-            else:
-                copia.remove_aresta(rotulo, aresta.getV1())
+            atual[b] = True
+            n_aresta += 1
+
+        return tree
+
+    def _listar_arestas_crescente(self):
+        return sorted(self.listar_arestas().items(), key=lambda x: x[1].getPeso())
+
+    def find(self, pais, i):
+        if pais[i] == i:
+            return i
+
+        return self.find(pais, pais[i])
+
+    def union(self, pais, ranque, x, y):
+        raiz_x = self.find(pais, x)
+        raiz_y = self.find(pais, y)
+
+        if ranque[raiz_x] < ranque[raiz_y]:
+            pais[raiz_x] = raiz_y
+        elif ranque[raiz_x] > ranque[raiz_y]:
+            pais[raiz_y] = raiz_x
+        else:
+            pais[raiz_y] = raiz_x
+            ranque[raiz_x] += 1
+
+    def kruskal(self):
+        if not self.conexo():
+            raise grafo_exceptions.MatrizInvalidaException(
+                f"O grafo matriz adjacência não é conexo."
+            )
+
+        tree = MeuGrafo(self.N.copy())
+        i = e = 0
+        arestas = self._listar_arestas_crescente()
+        pais = []
+        ranque = []
+
+        for n in range(len(self.N)):
+            pais.append(n)
+            ranque.append(0)
+
+        while e < len(self.N) - 1:
+            rotulo = arestas[i][0]
+            v1 = arestas[i][1].getV1()
+            v2 = arestas[i][1].getV2()
+            peso = arestas[i][1].getPeso()
+            i += 1
+            x = self.find(pais, self.N.index(v1))
+            y = self.find(pais, self.N.index(v2))
+            if x != y:
+                e += 1
+                tree.adicionaAresta(rotulo, v1, v2, peso)
+                self.union(pais, ranque, x, y)
 
         return tree

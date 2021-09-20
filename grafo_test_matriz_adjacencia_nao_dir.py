@@ -739,22 +739,20 @@ class TestGrafo(unittest.TestCase):
         )
         self.prim3.adicionaAresta("a1", "1", "2", 4)
         self.prim3.adicionaAresta("a2", "2", "3", 3)
-        self.prim3.adicionaAresta("a3", "1", "4", 9)
         self.prim3.adicionaAresta("a4", "3", "4", 5)
+        self.prim3.adicionaAresta("a5", "3", "5", 14)
         self.prim3.adicionaAresta("a6", "3", "8", 6)
         self.prim3.adicionaAresta("a7", "8", "12", 4)
         self.prim3.adicionaAresta("a9", "8", "11", 11)
         self.prim3.adicionaAresta("a10", "12", "13", 13)
-        self.prim3.adicionaAresta("a11", "13", "14", 13)
         self.prim3.adicionaAresta("a12", "14", "16", 8)
         self.prim3.adicionaAresta("a13", "14", "15", 3)
         self.prim3.adicionaAresta("a14", "4", "6", 6)
         self.prim3.adicionaAresta("a15", "6", "30", 2)
-        self.prim3.adicionaAresta("a16", "30", "29", 14)
         self.prim3.adicionaAresta("a17", "29", "28", 2)
-        self.prim3.adicionaAresta("a18", "28", "25", 12)
         self.prim3.adicionaAresta("a19", "28", "27", 2)
         self.prim3.adicionaAresta("a20", "27", "26", 5)
+        self.prim3.adicionaAresta("a21", "26", "25", 12)
         self.prim3.adicionaAresta("a22", "25", "23", 8)
         self.prim3.adicionaAresta("a23", "23", "24", 4)
         self.prim3.adicionaAresta("a24", "23", "7", 3)
@@ -764,11 +762,91 @@ class TestGrafo(unittest.TestCase):
         self.prim3.adicionaAresta("a29", "20", "19", 6)
         self.prim3.adicionaAresta("a30", "19", "17", 8)
         self.prim3.adicionaAresta("a31", "17", "16", 9)
-        self.prim3.adicionaAresta("a32", "17", "18", 11)
         self.prim3.adicionaAresta("a33", "18", "19", 8)
         self.prim3.adicionaAresta("a34", "20", "10", 12)
         self.prim3.adicionaAresta("a35", "10", "9", 2)
         self.prim3.adicionaAresta("a36", "10", "11", 9)
+
+        # Grafos para kruskal
+        self.kruskal1 = MeuGrafo(["a", "b", "c", "d", "e", "f"])
+        self.kruskal1.adicionaAresta("a1", "a", "b", 4)
+        self.kruskal1.adicionaAresta("a2", "a", "f", 5)
+        self.kruskal1.adicionaAresta("a3", "b", "c", 2)
+        self.kruskal1.adicionaAresta("a4", "c", "d", 3)
+        self.kruskal1.adicionaAresta("a5", "d", "e", 7)
+
+        self.kruskal2 = MeuGrafo(["a", "b", "c", "d", "e", "f", "g", "h"])
+        self.kruskal2.adicionaAresta("a2", "a", "g", 4)
+        self.kruskal2.adicionaAresta("a3", "b", "c", 6)
+        self.kruskal2.adicionaAresta("a5", "b", "h", 7)
+        self.kruskal2.adicionaAresta("a6", "c", "d", 8)
+        self.kruskal2.adicionaAresta("a9", "e", "f", 2)
+        self.kruskal2.adicionaAresta("a10", "f", "g", 1)
+        self.kruskal2.adicionaAresta("a11", "f", "h", 2)
+
+        self.kruskal3 = MeuGrafo(
+            [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12",
+                "13",
+                "14",
+                "15",
+                "16",
+                "17",
+                "18",
+                "19",
+                "20",
+                "21",
+                "22",
+                "23",
+                "24",
+                "25",
+                "26",
+                "27",
+                "28",
+                "29",
+                "30",
+            ]
+        )
+        self.kruskal3.adicionaAresta("a1", "1", "2", 4)
+        self.kruskal3.adicionaAresta("a2", "2", "3", 3)
+        self.kruskal3.adicionaAresta("a4", "3", "4", 5)
+        self.kruskal3.adicionaAresta("a5", "3", "5", 14)
+        self.kruskal3.adicionaAresta("a6", "3", "8", 6)
+        self.kruskal3.adicionaAresta("a7", "8", "12", 4)
+        self.kruskal3.adicionaAresta("a9", "8", "11", 11)
+        self.kruskal3.adicionaAresta("a10", "12", "13", 13)
+        self.kruskal3.adicionaAresta("a12", "14", "16", 8)
+        self.kruskal3.adicionaAresta("a13", "14", "15", 3)
+        self.kruskal3.adicionaAresta("a14", "4", "6", 6)
+        self.kruskal3.adicionaAresta("a15", "6", "30", 2)
+        self.kruskal3.adicionaAresta("a17", "29", "28", 2)
+        self.kruskal3.adicionaAresta("a19", "28", "27", 2)
+        self.kruskal3.adicionaAresta("a20", "27", "26", 5)
+        self.kruskal3.adicionaAresta("a21", "26", "25", 12)
+        self.kruskal3.adicionaAresta("a22", "25", "23", 8)
+        self.kruskal3.adicionaAresta("a23", "23", "24", 4)
+        self.kruskal3.adicionaAresta("a24", "23", "7", 3)
+        self.kruskal3.adicionaAresta("a25", "7", "5", 7)
+        self.kruskal3.adicionaAresta("a26", "23", "22", 2)
+        self.kruskal3.adicionaAresta("a28", "21", "20", 11)
+        self.kruskal3.adicionaAresta("a29", "20", "19", 6)
+        self.kruskal3.adicionaAresta("a30", "19", "17", 8)
+        self.kruskal3.adicionaAresta("a31", "17", "16", 9)
+        self.kruskal3.adicionaAresta("a33", "18", "19", 8)
+        self.kruskal3.adicionaAresta("a34", "20", "10", 12)
+        self.kruskal3.adicionaAresta("a35", "10", "9", 2)
+        self.kruskal3.adicionaAresta("a36", "10", "11", 9)
 
     def test_adiciona_aresta(self):
         self.assertTrue(self.g_p.adicionaAresta("a10", "J", "C"))
@@ -1013,6 +1091,13 @@ class TestGrafo(unittest.TestCase):
         self.assertEqual(self.peso1.prim().M, self.prim1.M)
         self.assertEqual(self.peso2.prim().M, self.prim2.M)
         self.assertEqual(self.peso3.prim().M, self.prim3.M)
+
+    def test_kruskal(self):
+        with self.assertRaises(grafo_exceptions.MatrizInvalidaException):
+            self.g_d.kruskal()
+        self.assertEqual(self.peso1.kruskal().M, self.kruskal1.M)
+        self.assertEqual(self.peso2.kruskal().M, self.kruskal2.M)
+        self.assertEqual(self.peso3.kruskal().M, self.kruskal3.M)
 
 
 if __name__ == "__main__":
