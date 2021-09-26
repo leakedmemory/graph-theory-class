@@ -102,19 +102,26 @@ class MeuGrafo(GrafoMatrizAdjacenciaDirecionado):
 
         return vertices_apenas_saida
 
-    def topografia(self):
+    def _listar_vertices_vistos(self):
+        vertices_grau_0 = self._listar_vertices_grau_0()
+        vertices_apenas_saida = self._listar_vertices_apenas_saida()
+        vertices_vistos = sorted(
+            vertices_grau_0 + vertices_apenas_saida, key=lambda x: int(x)
+        )
+        return vertices_vistos
+
+    def _remover_vertices_vistos(self, vertices_vistos):
+        for vertice in vertices_vistos:
+            self.remover_vertice(vertice)
+
+    def ordem_topologica(self):
         grafo = copy.deepcopy(self)
         topografia = []
 
         while True:
-            vertices_grau_0 = grafo._listar_vertices_grau_0()
-            vertices_apenas_saida = grafo._listar_vertices_apenas_saida()
-            vertices_vistos = sorted(
-                vertices_grau_0 + vertices_apenas_saida, key=lambda x: int(x)
-            )
+            vertices_vistos = grafo._listar_vertices_vistos()
             if not vertices_vistos:
                 return topografia
 
             topografia += vertices_vistos
-            for vertice in vertices_vistos:
-                grafo.remover_vertice(vertice)
+            grafo._remover_vertices_vistos(vertices_vistos)

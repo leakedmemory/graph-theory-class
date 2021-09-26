@@ -576,4 +576,4 @@ letras.adicionaAresta("a43", "74", "88")
 letras.adicionaAresta("a44", "77", "87")
 letras.adicionaAresta("a45", "78", "88")
 
-print(letras.topografia())
+print(letras.ordem_topologica())

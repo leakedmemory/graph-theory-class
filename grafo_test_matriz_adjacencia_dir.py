@@ -1487,19 +1487,20 @@ class TestGrafo(unittest.TestCase):
         self.assertFalse(self.slays.existe_caminho("d", "g"))
         self.assertFalse(self.g_medio.existe_caminho("10", "1"))
 
-    def test_topografia(self):
+    def test_topologica(self):
         self.assertEqual(
-            self.engenharia_de_computacao.topografia(),
+            self.engenharia_de_computacao.ordem_topologica(),
             self.engenharia_de_computacao_topografia,
         )
         self.assertEqual(
-            self.construcao_de_edificios.topografia(),
+            self.construcao_de_edificios.ordem_topologica(),
             self.construcao_de_edificios_topografia,
         )
-        self.assertEqual(self.fisica.topografia(), self.fisica_topografia)
-        self.assertEqual(self.matematica.topografia(), self.matematica_topografia)
-        self.assertEqual(self.telematica.topografia(), self.telematica_topografia)
-        self.assertEqual(self.letras.topografia(), self.letras_topografia)
+        self.assertEqual(self.fisica.ordem_topologica(), self.fisica_topografia)
+        self.assertEqual(self.matematica.ordem_topologica(), self.matematica_topografia)
+        self.assertEqual(self.telematica.ordem_topologica(), self.telematica_topografia)
+        self.assertEqual(self.letras.ordem_topologica(), self.letras_topografia)
+
 
 if __name__ == "__main__":
     unittest.main()
